@@ -66,9 +66,9 @@ public class EmployeeController {
     }
 
     /**
-     * 退出
+     * 退出登录
      *
-     * @return
+     * @return 返回退出登录状态
      */
     @ApiOperation(value = "员工退出登录")
     @PostMapping("/logout")
@@ -92,17 +92,37 @@ public class EmployeeController {
     }
 
     /**
-     *  分页查询员工信息，这里带有name属性，name是用来范围查询的，可写可不写
+     * 分页查询员工信息，这里带有name属性，name是用来范围查询的，可写可不写
+     *
      * @param employeePageQueryDTO 接收参数类
      * @return 返回一共几页，以及查询到当前页的信息
      */
     @GetMapping("/page")
     @ApiOperation("员工分页查询")
-    public Result<PageResult> pageQuery(EmployeePageQueryDTO employeePageQueryDTO){
-        log.info("分页查询员工信息，查询参数: {}",employeePageQueryDTO);
+    public Result<PageResult> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("分页查询员工信息，查询参数: {}", employeePageQueryDTO);
         PageResult queryList = employeeService.pageQuery(employeePageQueryDTO);
-        if(queryList == null) return Result.error("分页查询失败");
-        return Result.success("分页查询成功",queryList);
+        if (queryList == null) return Result.error("分页查询失败");
+        return Result.success("分页查询成功", queryList);
     }
+
+
+    /**
+     *  修改员工账号的启用禁用状态
+     * @param status 路径参数，{status} 路径传递启用禁用状态码
+     * @param id 查询参数 通过id=0  传递要更新的员工账号id
+     * @return 返回响应数据
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("员工账号启用禁用")
+    public Result<String> updateAccountStatus(@PathVariable Integer status,Long id) {
+        log.info("启用禁用员工账号: id={}, status={}",id,status);
+       Integer row =  employeeService.updateAccountStatus(status,id);
+       String rightMsg = status==1?"禁用成功":"启用成功";
+       String errMsg = status==1?"禁用失败":"启用失败";
+       if(row>0) return Result.success(rightMsg);
+       return Result.error(errMsg);
+    }
+
 
 }

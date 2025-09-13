@@ -32,4 +32,36 @@
         </where>
         order by createTime desc
     </select>
+
+
+    <!--动态更新员工数据-->
+    <update id="update">
+        update employee
+        <set>
+            <if test="username!=null and username!='' ">
+                username=#{username},
+            </if>
+
+            <if test="name!=null and name!='' ">
+                name=#{name},
+            </if>
+
+            <if test="password!=null and password!='' ">
+                password=#{password},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="sex!=null">
+                sex=#{sex},
+            </if>
+            <if test="idNumber!=null">
+                id_number=#{idNumber},
+            </if>
+            <if test="status!=null">
+                status=#{status}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
 </mapper>

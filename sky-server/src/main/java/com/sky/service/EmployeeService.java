@@ -28,4 +28,12 @@ public interface EmployeeService {
      * @return 返回一共几页，以及查询到当前页的信息
      */
     PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     *  修改员工账号的启用禁用状态
+     * @param status 路径参数，{status} 路径传递启用禁用状态码
+     * @param id 查询参数 通过id=0  传递要更新的员工账号id
+     * @return 返回影响行数
+     */
+   Integer updateAccountStatus(Integer status,Long id);
 }

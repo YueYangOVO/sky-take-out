@@ -11,8 +11,8 @@ public interface EmployeeMapper {
 
     /**
      * 根据用户名查询员工
-     * @param username
-     * @return
+     * @param username 1
+     * @return 1
      */
     @Select("select * from employee where username = #{username}")
     Employee getByUsername(String username);
@@ -31,4 +31,11 @@ public interface EmployeeMapper {
      * @return 返回查询到的所有结果
      */
     List<Employee> queryAll(String name);
+
+    /**
+     * 动态更新员工的数据
+     * @param employee 要更新员工的封装类
+     * @return 返回影响行数
+     */
+    Integer update(Employee employee);
 }

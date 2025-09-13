@@ -68,6 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 新增员工
+     *
      * @param employeeDTO 新增员工的接受类
      * @return 返回影响行数
      * BeanUtils方法是spring带的类 直接用
@@ -76,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Integer save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         //通过对象属性拷贝 一次性的将dto类中的属性拷贝到实体类
-        BeanUtils.copyProperties(employeeDTO,employee);
+        BeanUtils.copyProperties(employeeDTO, employee);
         //设置账号状态
         employee.setStatus(StatusConstant.ENABLE);//0禁止  1正常
         //设置密码， 密码默认是123456 但是还要进行md5加密
@@ -94,20 +95,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     *  分页查询员工信息，这里带有name属性，name是用来范围查询的，可写可不写
+     * 分页查询员工信息，这里带有name属性，name是用来范围查询的，可写可不写
+     *
      * @param employeePageQueryDTO 接收参数类
      * @return 返回一共几页，以及查询到当前页的信息
-     *
+     * <p>
      * 注意接收类中有三个参数，第一个name 可选； page当前页 必写；
      * pageSize 每页查询多少条 必写。
      */
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
         //使用pageHelper分页查询
-        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
 
         //查询表中所有数据
-        List<Employee> list =  employeeMapper.queryAll(employeePageQueryDTO.getName());
+        List<Employee> list = employeeMapper.queryAll(employeePageQueryDTO.getName());
 
         //封装到pageInfo中
         PageInfo<Employee> pageInfo = new PageInfo<>(list);
@@ -120,31 +122,27 @@ public class EmployeeServiceImpl implements EmployeeService {
         return pageResult;
     }
 
+    /**
+     * 修改员工账号的启用禁用状态
+     *
+     * @param status 路径参数，{status} 路径传递启用禁用状态码
+     * @param id     查询参数 通过id=0  传递要更新的员工账号id
+     * @return 返回影响行数
+     */
+    @Override
+    public Integer updateAccountStatus(Integer status, Long id) {
+   /*     //这里更新方法 要动态更新
+        Employee employee = new Employee();
+        //根据员工id 修改数据
+        employee.setStatus(status);
+        employee.setId(id);*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+        return employeeMapper.update(employee);
+    }
 
 
 }
