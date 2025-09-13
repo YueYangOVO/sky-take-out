@@ -1,6 +1,7 @@
 package com.sky.interceptor;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.properties.JwtProperties;
 import com.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -30,6 +31,11 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
      * @param handler
      * @return
      * @throws Exception
+     *
+     * 这里handlerMethod是一个类 ，它封装控制层中的各个方法
+     * preHandler方法中的第三个参数： 前端传过来的url可能是访问静态资源，也可以是访问控制层中的方法， handler是一个控制器，
+     * 用来接收前端请求对象，handler可以是任何类型，比如是访问静态资源的对象，也可以是访问控制层方法的对象，
+     * 这就对应着下面用handler判断是不是handlerMethod这个类的实例对象。
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //判断当前拦截到的是Controller的方法还是其他资源
@@ -46,7 +52,9 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            log.info("当前员工id：", empId);
+            //向ThreadLocal中存储当前请求用户的id
+            BaseContext.setCurrentId(empId);
+            log.info("当前员工id：{}", empId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {

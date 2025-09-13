@@ -1,7 +1,10 @@
 package com.sky.service;
 
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
+import com.sky.result.PageResult;
 
 public interface EmployeeService {
 
@@ -12,4 +15,17 @@ public interface EmployeeService {
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
+    /**
+     * 新增员工
+     * @param employeeDTO 新增员工的接受类
+     * @return 返回影响行数
+     */
+    Integer save(EmployeeDTO employeeDTO);
+
+    /**
+     *  分页查询员工信息，这里带有name属性，name是用来范围查询的，可写可不写
+     * @param employeePageQueryDTO 接收参数类
+     * @return 返回一共几页，以及查询到当前页的信息
+     */
+    PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 }

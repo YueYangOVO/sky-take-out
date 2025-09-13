@@ -4,6 +4,8 @@ import com.sky.entity.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface EmployeeMapper {
 
@@ -15,4 +17,18 @@ public interface EmployeeMapper {
     @Select("select * from employee where username = #{username}")
     Employee getByUsername(String username);
 
+    /**
+     * 向employee表中插入数据
+     * @param employee 插入数据的封装类
+     * @return 返回影响行数
+     */
+    Integer insert(Employee employee);
+
+
+    /**
+     * 分页查询员工的所有信息
+     * @param name 搜索查询
+     * @return 返回查询到的所有结果
+     */
+    List<Employee> queryAll(String name);
 }

@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * 后端统一返回结果
+ *
  * @param <T>
  */
 @Data
@@ -21,15 +22,30 @@ public class Result<T> implements Serializable {
         return result;
     }
 
-    public static <T> Result<T> success(T object) {
+    public static <T> Result<T> success(String msg) {
+        Result<T> result = new Result<>();
+        result.code = 1;
+        result.msg = msg;
+        return result;
+    }
+
+    public static <T> Result<T> success(T data) {
         Result<T> result = new Result<T>();
-        result.data = object;
+        result.data = data;
         result.code = 1;
         return result;
     }
 
+    public static <T> Result<T> success(String msg, T data) {
+        Result<T> result = new Result<T>();
+        result.data = data;
+        result.code = 1;
+        result.msg = msg;
+        return result;
+    }
+
     public static <T> Result<T> error(String msg) {
-        Result result = new Result();
+        Result<T> result = new Result<>();
         result.msg = msg;
         result.code = 0;
         return result;

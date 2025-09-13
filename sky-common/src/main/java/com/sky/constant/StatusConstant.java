@@ -1,7 +1,7 @@
 package com.sky.constant;
 
 /**
- * 状态常量，启用或者禁用
+ * 账号的状态常量，启用或者禁止
  */
 public class StatusConstant {
 
