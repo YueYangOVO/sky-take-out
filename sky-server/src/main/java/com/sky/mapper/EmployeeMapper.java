@@ -38,4 +38,11 @@ public interface EmployeeMapper {
      * @return 返回影响行数
      */
     Integer update(Employee employee);
+
+    /**
+     * 根据id查询员工信息
+     * @param id 查询id
+     * @return 返回查询结果
+     */
+    Employee queryById(Integer id);
 }

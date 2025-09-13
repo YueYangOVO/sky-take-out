@@ -108,20 +108,52 @@ public class EmployeeController {
 
 
     /**
-     *  修改员工账号的启用禁用状态
+     * 修改员工账号的启用禁用状态
+     *
      * @param status 路径参数，{status} 路径传递启用禁用状态码
-     * @param id 查询参数 通过id=0  传递要更新的员工账号id
+     * @param id     查询参数 通过id=0  传递要更新的员工账号id
      * @return 返回响应数据
      */
     @PostMapping("/status/{status}")
     @ApiOperation("员工账号启用禁用")
-    public Result<String> updateAccountStatus(@PathVariable Integer status,Long id) {
-        log.info("启用禁用员工账号: id={}, status={}",id,status);
-       Integer row =  employeeService.updateAccountStatus(status,id);
-       String rightMsg = status==1?"禁用成功":"启用成功";
-       String errMsg = status==1?"禁用失败":"启用失败";
-       if(row>0) return Result.success(rightMsg);
-       return Result.error(errMsg);
+    public Result<String> updateAccountStatus(@PathVariable Integer status, Long id) {
+        log.info("启用禁用员工账号: id={}, status={}", id, status);
+        Integer row = employeeService.updateAccountStatus(status, id);
+        String rightMsg = status == 1 ? "禁用成功" : "启用成功";
+        String errMsg = status == 1 ? "禁用失败" : "启用失败";
+        if (row > 0) return Result.success(rightMsg);
+        return Result.error(errMsg);
+    }
+
+    /**
+     * 根据id查询员工信息
+     *
+     * @param id 查询id
+     * @return 返回查询结果
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> queryEmployeeById(@PathVariable Integer id) {
+        log.info("根据id查询员工数据: id={}", id);
+        Employee employee = employeeService.queryEmployeeById(id);
+        if (employee == null) return Result.error("查询员工信息失败");
+        return Result.success("查询员工信息成功", employee);
+    }
+
+
+    /**
+     * 修改员工数据
+     *
+     * @param employeeDTO 接收修改内容
+     * @return 返回修改状态
+     */
+    @PutMapping
+    @ApiOperation("修改员工数据")
+    public Result<String> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("修改员工数据: {}", employeeDTO);
+        Integer row = employeeService.updateEmployee(employeeDTO);
+        if (row > 0) return Result.success("修改员工成功");
+        return Result.error("修改员工失败");
     }
 
 

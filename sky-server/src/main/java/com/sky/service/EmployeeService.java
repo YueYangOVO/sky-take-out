@@ -10,8 +10,8 @@ public interface EmployeeService {
 
     /**
      * 员工登录
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 1
+     * @return 1
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
@@ -36,4 +36,18 @@ public interface EmployeeService {
      * @return 返回影响行数
      */
    Integer updateAccountStatus(Integer status,Long id);
+
+    /**
+     * 根据id查询员工信息
+     * @param id 查询id
+     * @return 返回查询结果
+     */
+    Employee queryEmployeeById(Integer id);
+
+    /**
+     * 修改员工数据
+     * @param employeeDTO 接收修改内容
+     * @return 返回修改状态
+     */
+    Integer updateEmployee(EmployeeDTO employeeDTO);
 }
