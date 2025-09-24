@@ -1,0 +1,9 @@
+**/target/
+.idea
+*.iml
+*.class
+*Test.java
+**/test/
+
+# Ignore local dev config
+**/application-dev.yml
