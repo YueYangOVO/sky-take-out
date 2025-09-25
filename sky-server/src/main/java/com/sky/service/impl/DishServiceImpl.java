@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -155,5 +156,11 @@ public class DishServiceImpl implements DishService {
         dishDTO.setId(id);
         dishDTO.setStatus(status);
         return dishMapper.update(dishDTO);
+    }
+
+    //根据分类id查询菜品
+    @Override
+    public List<Dish> getByCategoryId(Integer categoryId) {
+        return dishMapper.getByCategoryId(categoryId);
     }
 }

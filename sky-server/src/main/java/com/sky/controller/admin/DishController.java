@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -88,6 +89,14 @@ public class DishController {
         Integer row = dishService.updateStatus(status, id);
         if (row > 0) return Result.success();
         return Result.error("操作失败");
+    }
+
+    //根据分类id查询菜品
+    @GetMapping("/list")
+    public Result<List<Dish>> getByCategoryId(Integer categoryId) {
+        List<Dish> list = dishService.getByCategoryId(categoryId);
+        if (list == null) return Result.error("查询失败");
+        return Result.success("查询成功", list);
     }
 
 

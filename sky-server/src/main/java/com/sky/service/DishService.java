@@ -2,6 +2,7 @@ package com.sky.service;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.vo.DishVO;
 
@@ -30,4 +31,7 @@ public interface DishService {
 
     //菜品的起售停售
     Integer updateStatus(Integer status, Long id);
+
+    //根据分类id查询数据
+    List<Dish> getByCategoryId(Integer categoryId);
 }

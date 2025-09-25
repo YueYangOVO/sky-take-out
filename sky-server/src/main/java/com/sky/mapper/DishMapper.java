@@ -43,4 +43,7 @@ public interface DishMapper {
     //根据id修改菜品
     @AutoFill(OperationType.UPDATE)
     Integer update(DishDTO dishDTO);
+
+    //根据分类id查询菜品
+    List<Dish> getByCategoryId(Integer categoryId);
 }

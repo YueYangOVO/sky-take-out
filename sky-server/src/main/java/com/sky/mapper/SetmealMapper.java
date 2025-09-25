@@ -1,17 +1,40 @@
 package com.sky.mapper;
 
+import com.sky.annotation.AutoFill;
+import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Setmeal;
+import com.sky.enumeration.OperationType;
+import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface SetmealMapper {
 
     /**
      * 根据分类id查询套餐的数量
+     *
      * @param id
      * @return
      */
     @Select("select count(id) from setmeal where category_id = #{categoryId}")
     Integer countByCategoryId(Long id);
 
+    /**
+     * 新增套餐 套餐中涉及菜品表
+     *
+     * @param setmeal 接收套餐数据
+     */
+    @AutoFill(OperationType.INSERT)
+    Integer insert(Setmeal setmeal);
+
+    /**
+     * 分页查询 套餐列表
+     *
+     * @param setmealPageQueryDTO 查询参数
+     * @return 返回查询对象
+     */
+    List<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 }
