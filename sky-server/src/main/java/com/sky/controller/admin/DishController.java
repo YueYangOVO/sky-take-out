@@ -5,6 +5,7 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -55,13 +56,39 @@ public class DishController {
     public Result<String> deleteDish(@RequestParam List<Long> ids) {
         log.info("批量删除菜品:{} ", ids);
         Integer rows = dishService.deleteDish(ids);
-        if(rows>0) return Result.success("删除成功");
+        if (rows > 0) return Result.success("删除成功");
         return Result.error("删除失败");
     }
 
+    //根据id查询菜品 用于数据回显 还要查询菜品关联的口味
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询菜品")
+    public Result<DishVO> getById(@PathVariable Long id) {
+        log.info("根据id查询菜品:{}", id);
+        DishVO dishVO = dishService.getById(id);
+        if (dishVO != null) return Result.success("查询成功", dishVO);
+        return Result.error("查询失败");
+    }
 
+    //根据id修改数据
+    @PutMapping
+    @ApiOperation("根据id修改菜品")
+    public Result<String> update(@RequestBody DishDTO dishDTO) {
+        log.info("根据id修改菜品:{}", dishDTO);
+        Integer row = dishService.update(dishDTO);
+        if (row > 0) return Result.success("修改菜品成功");
+        return Result.error("修改数据失败");
+    }
 
-
+    //菜品的起售停售
+    @PostMapping("/status/{status}")
+    @ApiOperation("菜品的起售停售")
+    public Result<String> updateStatus(@PathVariable Integer status, Long id) {
+        log.info("菜品的起售停售:{}", status);
+        Integer row = dishService.updateStatus(status, id);
+        if (row > 0) return Result.success();
+        return Result.error("操作失败");
+    }
 
 
 }

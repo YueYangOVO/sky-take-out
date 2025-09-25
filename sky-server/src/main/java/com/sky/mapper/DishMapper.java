@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.sky.annotation.AutoFill;
+import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
@@ -35,4 +36,11 @@ public interface DishMapper {
 
     //根据id批量删除
     Integer deleteByIds(List<Long> ids);
+
+    //根据id查询菜品 用于数据回显 还要查询菜品关联的口味
+    DishVO selectById(Long id);
+
+    //根据id修改菜品
+    @AutoFill(OperationType.UPDATE)
+    Integer update(DishDTO dishDTO);
 }

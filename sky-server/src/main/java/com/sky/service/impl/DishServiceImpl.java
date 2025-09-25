@@ -2,12 +2,14 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sky.annotation.AutoFill;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.enumeration.OperationType;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -112,5 +115,45 @@ public class DishServiceImpl implements DishService {
         row1 += dishMapper.deleteByIds(ids);
 
         return row1;
+    }
+
+    //根据id查询菜品 用于数据回显 还要查询菜品关联的口味
+    @Override
+    public DishVO getById(Long id) {
+        //根据id查询菜品
+        return dishMapper.selectById(id);
+    }
+
+    //根据id修改菜品
+    @Override
+    @Transactional
+    public Integer update(DishDTO dishDTO) {
+        Integer row = 0;
+        //首先判断口味是否为空，不为空修改或者添加口味
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+
+        //先删除原有的口味，再把这些口味重新添加数据库中
+        List<Long> ids = new ArrayList<>();
+        ids.add(dishDTO.getId());
+        dishFlavorMapper.deleteByDishIds(ids);
+
+        //添加新口味
+        for (DishFlavor flavor : flavors) {
+            flavor.setDishId(dishDTO.getId());
+        }
+        row += dishFlavorMapper.insertBatch(flavors);
+        //添加完口味添加修改菜品
+        row += dishMapper.update(dishDTO);
+        return row;
+    }
+
+    //菜品的起售停售
+    @Override
+    @AutoFill(OperationType.UPDATE)
+    public Integer updateStatus(Integer status, Long id) {
+        DishDTO dishDTO = new DishDTO();
+        dishDTO.setId(id);
+        dishDTO.setStatus(status);
+        return dishMapper.update(dishDTO);
     }
 }
