@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 新增分类
-     * @param categoryDTO
+     * @param categoryDTO 1
      */
     public void save(CategoryDTO categoryDTO) {
         Category category = new Category();
@@ -129,6 +129,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return ·
      */
     public List<Category> list(Integer type) {
+
         return categoryMapper.list(type);
     }
 }

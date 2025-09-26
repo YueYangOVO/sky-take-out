@@ -160,7 +160,7 @@ public class DishServiceImpl implements DishService {
 
     //根据分类id查询菜品
     @Override
-    public List<Dish> getByCategoryId(Integer categoryId) {
+    public List<DishVO> getByCategoryId(Integer categoryId) {
         return dishMapper.getByCategoryId(categoryId);
     }
 }

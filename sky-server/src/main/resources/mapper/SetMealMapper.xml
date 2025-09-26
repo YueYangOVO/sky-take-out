@@ -112,4 +112,30 @@
             #{id}
         </foreach>
     </select>
+
+    <select id="selectByCategoryId" resultType="com.sky.entity.Setmeal">
+        select id,
+               category_id,
+               name,
+               price,
+               status,
+               description,
+               image,
+               create_time,
+               update_time,
+               create_user,
+               update_user
+        from setmeal
+        where category_id = #{categoryId}
+    </select>
+
+    <select id="selectById2" resultType="com.sky.vo.DishItemVO">
+        select s.description,
+               s.image,
+               sd.name,
+               sd.copies
+        from setmeal s
+                 left join setmeal_dish sd on s.id = sd.setmeal_id
+        where s.id = #{id}
+    </select>
 </mapper>

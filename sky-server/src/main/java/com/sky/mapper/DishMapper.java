@@ -45,5 +45,5 @@ public interface DishMapper {
     Integer update(DishDTO dishDTO);
 
     //根据分类id查询菜品
-    List<Dish> getByCategoryId(Integer categoryId);
+    List<DishVO> getByCategoryId(Integer categoryId);
 }

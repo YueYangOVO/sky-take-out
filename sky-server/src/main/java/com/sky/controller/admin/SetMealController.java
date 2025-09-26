@@ -19,7 +19,7 @@ import java.util.Set;
  * Created on 2025/9/25 15:40
  * @version 1.0
  */
-@RestController
+@RestController("adminSetMealController")
 @Api("套餐管理相关接口")
 @RequestMapping("/admin/setmeal")
 public class SetMealController {
@@ -101,14 +101,15 @@ public class SetMealController {
 
     /**
      * 根据 list集合批量删除套餐
+     *
      * @param ids 接收参数列表
      * @return 返回删除结果
      */
     @DeleteMapping
     @ApiOperation("批量删除")
-    public Result<String> delete(@RequestParam List<Long> ids){
+    public Result<String> delete(@RequestParam List<Long> ids) {
         Integer row = setMealService.deleteBatch(ids);
-        if(row > 0) return Result.success("删除成功");
+        if (row > 0) return Result.success("删除成功");
         return Result.error("删除失败");
     }
 

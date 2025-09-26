@@ -33,5 +33,5 @@ public interface DishService {
     Integer updateStatus(Integer status, Long id);
 
     //根据分类id查询数据
-    List<Dish> getByCategoryId(Integer categoryId);
+    List<DishVO> getByCategoryId(Integer categoryId);
 }
