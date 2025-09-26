@@ -55,17 +55,17 @@ public interface SetmealMapper {
     SetmealVO selectById(Long id);
 
 
+    /**
+     * 批量删除
+     * @param ids 批量删除id列表
+     * @return 返回删除行数
+     */
+    Integer delete(List<Long> ids);
 
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * 批量查询菜品
+     * @param ids 查询id列表
+     * @return 返回查询对象集合
+     */
+    List<SetmealVO> selectByIds(List<Long> ids);
 }

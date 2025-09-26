@@ -11,6 +11,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author YueYang
  * Created on 2025/9/25 15:40
@@ -69,14 +72,45 @@ public class SetMealController {
     /**
      * 根据id查询套餐 这里设计三张表
      * 查询套餐表 分类表 套餐菜品表
+     *
      * @param id 套餐id
      * @return 返回查询结果
      */
     @GetMapping("/{id}")
     @ApiOperation("根据id查询套餐")
-    public Result<SetmealVO> queryById(@PathVariable Long id){
+    public Result<SetmealVO> queryById(@PathVariable Long id) {
         SetmealVO setmealVO = setMealService.queryById(id);
         if (setmealVO != null) return Result.success("查询成功", setmealVO);
         return Result.error("查询失败");
     }
+
+    /**
+     * 接收dto格式对象，用来更新套餐
+     *
+     * @param setmealDTO 接收json格式的数据
+     * @return 返回更新结果
+     */
+    @PutMapping
+    @ApiOperation("更新套餐")
+    public Result<String> update(@RequestBody SetmealDTO setmealDTO) {
+        Integer row = setMealService.update(setmealDTO);
+        if (row > 0) return Result.success("修改成功");
+        return Result.error("修改失败");
+    }
+
+
+    /**
+     * 根据 list集合批量删除套餐
+     * @param ids 接收参数列表
+     * @return 返回删除结果
+     */
+    @DeleteMapping
+    @ApiOperation("批量删除")
+    public Result<String> delete(@RequestParam List<Long> ids){
+        Integer row = setMealService.deleteBatch(ids);
+        if(row > 0) return Result.success("删除成功");
+        return Result.error("删除失败");
+    }
+
+
 }

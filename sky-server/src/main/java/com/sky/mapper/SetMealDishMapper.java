@@ -24,4 +24,11 @@ public interface SetMealDishMapper {
      * @return 返回影响行数
      */
     Integer insert(List<SetmealDish> setmealDishes);
+
+    /**
+     * 根据setmealId删除记录
+     * @param ids 要删除的套餐id
+     * @return 返回影响行数
+     */
+    Integer deleteBySetMealIds(List<Long> ids);
 }

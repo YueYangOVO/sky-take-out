@@ -5,6 +5,8 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.vo.SetmealVO;
 
+import java.util.List;
+
 /**
  * @author YueYang
  * Created on 2025/9/25 15:46
@@ -42,4 +44,18 @@ public interface SetMealService {
      * @return 返回查询对象
      */
     SetmealVO queryById(Long id);
+
+    /**
+     * 更新套餐
+     * @param setmealDTO 更新对象
+     * @return 返回影响行数
+     */
+    Integer update(SetmealDTO setmealDTO);
+
+    /**
+     * 批量删除
+     * @param ids 批量删除id列表
+     * @return 返回删除行数
+     */
+    Integer deleteBatch(List<Long> ids);
 }
