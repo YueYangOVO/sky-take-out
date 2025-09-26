@@ -3,6 +3,7 @@ package com.sky.service;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
+import com.sky.vo.SetmealVO;
 
 /**
  * @author YueYang
@@ -25,4 +26,20 @@ public interface SetMealService {
      * @return 返回查询对象
      */
     PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 套餐起售停售
+     * @param status 套餐状态
+     * @param id 修改状态套餐的id
+     * @return  返回修改状态
+     */
+    Integer updateStatus(Integer status, Long id);
+
+
+    /**
+     *
+     * @param id 套餐id
+     * @return 返回查询对象
+     */
+    SetmealVO queryById(Long id);
 }

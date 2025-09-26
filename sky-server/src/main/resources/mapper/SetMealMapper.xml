@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.SetmealMapper">
+    <resultMap id="setMealMapper" type="com.sky.vo.SetmealVO">
+        <id property="id" column="id"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="status" column="status"/>
+        <result property="description" column="description"/>
+        <result property="image" column="image"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="categoryName" column="categoryName"/>
+        <collection property="setmealDishes" ofType="com.sky.entity.SetmealDish">
+            <id property="id" column="sdId"/>
+            <result property="setmealId" column="setmealId"/>
+            <result property="dishId" column="dishId"/>
+            <result property="name" column="sdName"/>
+            <result property="price" column="sdPrice"/>
+            <result property="copies" column="copies"/>
+        </collection>
+    </resultMap>
+
+
 
     <!-- 插入套餐 -->
     <insert id="insert" parameterType="com.sky.entity.Setmeal" useGeneratedKeys="true" keyProperty="id">
@@ -9,6 +30,20 @@
         values (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser},
                 #{updateUser}, #{status})
     </insert>
+
+    <update id="update" parameterType="com.sky.entity.Setmeal">
+        update setmeal
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+    </update>
 
     <select id="pageQuery" resultType="com.sky.vo.SetmealVO" parameterType="com.sky.dto.SetmealPageQueryDTO">
         select s.id,
@@ -36,5 +71,30 @@
                 and s.status=#{status}
             </if>
         </where>
+    </select>
+
+    <select id="selectById" resultMap="setMealMapper" parameterType="java.lang.Long">
+        select s.id,
+               s.category_id,
+               s.name,
+               s.price,
+               s.status,
+               s.description,
+               s.image,
+               s.create_time,
+               s.update_time,
+               s.create_user,
+               s.update_user,
+               c.name        categoryName,
+               sd.id sdId,
+               sd.setmeal_id setmealId,
+               sd.dish_id    dishId,
+               sd.name sdName,
+               sd.price sdPrice,
+               sd.copies
+        from setmeal s
+                 left join category c on s.category_id = c.id
+                 left join setmeal_dish sd on s.id = sd.setmeal_id
+        where s.id = #{id}
     </select>
 </mapper>

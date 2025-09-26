@@ -37,4 +37,35 @@ public interface SetmealMapper {
      * @return 返回查询对象
      */
     List<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 修改套餐状态
+     *
+     * @param setmeal 修改对象
+     * @return 返回修改行数
+     */
+    @AutoFill(OperationType.UPDATE)
+    Integer update(Setmeal setmeal);
+
+    /**
+     *
+     * @param id 套餐id
+     * @return 返回查询对象
+     */
+    SetmealVO selectById(Long id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

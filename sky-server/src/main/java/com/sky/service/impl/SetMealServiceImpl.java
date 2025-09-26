@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author YueYang
@@ -73,4 +74,31 @@ public class SetMealServiceImpl implements SetMealService {
         //封装返回对象
         return new PageResult(pageInfo.getTotal(), pageInfo.getList());
     }
+
+    /**
+     * 套餐起售停售
+     * @param status 套餐状态
+     * @param id 修改状态套餐的id
+     * @return  返回修改状态
+     */
+    @Override
+    public Integer updateStatus(Integer status, Long id) {
+        Setmeal setmeal = new Setmeal();
+        setmeal.setId(id);
+        setmeal.setStatus(status);
+        return setmealMapper.update(setmeal);
+    }
+
+    /**
+     *
+     * @param id 套餐id
+     * @return 返回查询对象
+     */
+    @Transactional
+    @Override
+    public SetmealVO queryById(Long id) {
+        return setmealMapper.selectById(id);
+    }
+
+
 }
