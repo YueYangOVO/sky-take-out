@@ -62,7 +62,7 @@ public class EmployeeController {
                 .token(token)
                 .build();
 
-        return Result.success(employeeLoginVO);
+        return Result.success("登录成功", employeeLoginVO);
     }
 
     /**
@@ -73,7 +73,7 @@ public class EmployeeController {
     @ApiOperation(value = "员工退出登录")
     @PostMapping("/logout")
     public Result<String> logout() {
-        return Result.success();
+        return Result.success("退出登录成功");
     }
 
     /**

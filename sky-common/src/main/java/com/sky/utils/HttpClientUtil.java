@@ -25,26 +25,28 @@ import java.util.Map;
  */
 public class HttpClientUtil {
 
-    static final  int TIMEOUT_MSEC = 5 * 1000;
+    static final int TIMEOUT_MSEC = 5 * 1000;
 
     /**
      * 发送GET方式请求
+     *
      * @param url
      * @param paramMap
      * @return
      */
-    public static String doGet(String url,Map<String,String> paramMap){
+    public static String doGet(String url, Map<String, String> paramMap) {
         // 创建Httpclient对象
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         String result = "";
         CloseableHttpResponse response = null;
 
-        try{
+        try {
+            //给url的请求路径拼接参数， 请求的参数通过map集合传递过来
             URIBuilder builder = new URIBuilder(url);
-            if(paramMap != null){
+            if (paramMap != null) {
                 for (String key : paramMap.keySet()) {
-                    builder.addParameter(key,paramMap.get(key));
+                    builder.addParameter(key, paramMap.get(key));
                 }
             }
             URI uri = builder.build();
@@ -56,17 +58,19 @@ public class HttpClientUtil {
             response = httpClient.execute(httpGet);
 
             //判断响应状态
-            if(response.getStatusLine().getStatusCode() == 200){
-                result = EntityUtils.toString(response.getEntity(),"UTF-8");
+            if (response.getStatusLine().getStatusCode() == 200) {
+                result = EntityUtils.toString(response.getEntity(), "UTF-8");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
             try {
-                response.close();
+                if (response != null) {
+                    response.close();
+                }
                 httpClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
 
@@ -75,10 +79,12 @@ public class HttpClientUtil {
 
     /**
      * 发送POST方式请求
-     * @param url
-     * @param paramMap
-     * @return
-     * @throws IOException
+     * 使用 application/x-www-form-urlencoded 模拟表单 POST；
+     *
+     * @param url      请求url
+     * @param paramMap 请求体参数
+     * @return ·
+     * @throws IOException ·
      */
     public static String doPost(String url, Map<String, String> paramMap) throws IOException {
         // 创建Httpclient对象
@@ -92,15 +98,15 @@ public class HttpClientUtil {
 
             // 创建参数列表
             if (paramMap != null) {
-                List<NameValuePair> paramList = new ArrayList();
+                List<NameValuePair> paramList = new ArrayList<>();
                 for (Map.Entry<String, String> param : paramMap.entrySet()) {
                     paramList.add(new BasicNameValuePair(param.getKey(), param.getValue()));
                 }
                 // 模拟表单
-                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(paramList);
+                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(paramList, "UTF-8");
                 httpPost.setEntity(entity);
             }
-
+            //设置超时处理
             httpPost.setConfig(builderRequestConfig());
 
             // 执行http请求
@@ -108,12 +114,15 @@ public class HttpClientUtil {
 
             resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
         } catch (Exception e) {
-            throw e;
+            System.out.println(e.getMessage());
         } finally {
             try {
-                response.close();
+                if (response != null) {
+                    response.close();
+                }
+                httpClient.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
 
@@ -122,10 +131,12 @@ public class HttpClientUtil {
 
     /**
      * 发送POST方式请求
-     * @param url
-     * @param paramMap
-     * @return
-     * @throws IOException
+     * 将 paramMap 序列化为 JSON 并以 application/json 格式发送POST
+     *
+     * @param url      请求url
+     * @param paramMap 请求体参数
+     * @return ·
+     * @throws IOException ·
      */
     public static String doPost4Json(String url, Map<String, String> paramMap) throws IOException {
         // 创建Httpclient对象
@@ -141,9 +152,9 @@ public class HttpClientUtil {
                 //构造json格式数据
                 JSONObject jsonObject = new JSONObject();
                 for (Map.Entry<String, String> param : paramMap.entrySet()) {
-                    jsonObject.put(param.getKey(),param.getValue());
+                    jsonObject.put(param.getKey(), param.getValue());
                 }
-                StringEntity entity = new StringEntity(jsonObject.toString(),"utf-8");
+                StringEntity entity = new StringEntity(jsonObject.toString(), "utf-8");
                 //设置请求编码
                 entity.setContentEncoding("utf-8");
                 //设置数据类型
@@ -158,17 +169,20 @@ public class HttpClientUtil {
 
             resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
         } catch (Exception e) {
-            throw e;
+            System.out.println(e.getMessage());
         } finally {
             try {
-                response.close();
+                if (response != null) response.close();
+                httpClient.close();
+
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
 
         return resultString;
     }
+
     private static RequestConfig builderRequestConfig() {
         return RequestConfig.custom()
                 .setConnectTimeout(TIMEOUT_MSEC)

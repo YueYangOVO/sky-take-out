@@ -38,14 +38,25 @@ logging:
 sky:
   jwt:
     # 设置jwt签名加密时使用的秘钥
-    admin-secret-key: itcast
+    admin-secret-key: admin-yueyang
     # 设置jwt过期时间 设置一天过期
     admin-ttl: 86400000
-    # 设置前端传递过来的令牌名称
+    # 设置前端传递过来的令牌名称,管理端token
     admin-token-name: token
+    # 设置用户小程序端传过来的令牌名称，
+    user-token-name: authentication
+    # 设置用户端token过期时间
+    user-ttl: 8640000
+    # 设置密钥
+    user-secret-key: user-yueyang
   # 阿里云oss文件上传
   alioss:
     endpoint: ${sky.alioss.endpoint}
     access-key-id: ${sky.alioss.access-key-id}
     access-key-secret: ${sky.alioss.access-key-secret}
     bucket-name: ${sky.alioss.bucket-name}
+  # 微信属性配置
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
+
